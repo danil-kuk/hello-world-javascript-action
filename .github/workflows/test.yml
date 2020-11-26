@@ -1,0 +1,19 @@
+on: [push]
+
+jobs:
+  hello_world_test_job:
+    runs-on: ubuntu-latest
+    name: A test job to say hello
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run build
+      - name: Hello world action step
+        uses: ./ # Uses an action in the root directory
+        id: hello
+        with:
+          who-to-greet: 'Mona the Octocat'
+      # Use the output from the `hello` step
+      - name: Get the output time
+        run: echo "The time was ${{ steps.hello.outputs.time }}"
